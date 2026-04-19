@@ -1,0 +1,19 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/.pytest_cache/
+backend/*.pyc
+
+# Node
+frontend/chatbot/node_modules/
+frontend/chatbot/dist/
+
+# Env
+.env
+**/.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

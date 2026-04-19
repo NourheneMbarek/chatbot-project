@@ -1,0 +1,2 @@
+Employees can request vacation through the HR portal.
+Vacation requests should be submitted at least two weeks in advance.
