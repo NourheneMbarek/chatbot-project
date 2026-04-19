@@ -39,7 +39,63 @@ chatbot-project/
 ├── frontend/
 │
 └── README.md
+
+## 📂 Project Structure
+
 ```
+chatbot-project/
+│
+├── backend/
+│   ├── main.py                # FastAPI entry point
+    ├── app/                # FastAPI entry point
+│   │    ├── models.py              # Request/response schemas
+│   │    ├── rag.py                 # Document retrieval logic
+│   │    ├── router.py              # Intent detection
+│   │    ├── tools.py               # External service (mocked)
+│   │    ├── loaders/               # Document loaders
+│   │    │   ├── pdf_loader.py
+│   │    │   ├── txt_loader.py
+│   │    │   ├── md_loader.py
+│   │    │   └── document_loader.py
+│   ├── data/                  # Static documents
+│   │   ├── employee_guide.md
+│   │   ├── handbook.pdf
+│   │   └── vacation_policy.txt
+│   ├── requirements.txt       # Python dependencies
+│   └── README.md              # Backend documentation
+│
+├── frontend/
+│   └── chatbot/
+│       ├── src/               # React source code
+│       ├── public/
+│       ├── index.html
+│       ├── package.json
+│       ├── tailwind.config.js
+│       ├── tsconfig.json
+│       └── README.md          # Frontend documentation
+│
+├── .gitignore
+├── README.md                  # Main project documentation
+```
+
+---
+
+## 🧩 Architecture Overview
+
+```
+User → React Frontend → FastAPI Backend
+                             ↓
+                  ┌─────────────────────┐
+                  │   Intent Detection  │
+                  └─────────┬───────────┘
+                            │
+           ┌────────────────┴──────────────┐
+           │                               │
+   📄 Document Search (RAG)       🔧 External Tool
+   (PDF, TXT, Markdown)          (Vacation API)
+```
+
+---
 
 ---
 
@@ -48,7 +104,7 @@ chatbot-project/
 ### 1️⃣ Clone repository
 
 ```
-git clone <your-repo-url>
+git clone <https://github.com/NourheneMbarek/chatbot-project>
 cd chatbot-project
 ```
 
