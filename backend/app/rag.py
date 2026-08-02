@@ -1,50 +1,114 @@
 from app.loaders.document_loader import load_documents_from_folder
+from app.prompts import build_document_prompt
 
 
-DOCUMENTS = []
+DOCUMENTS: list[dict] = []
 
 
-def initialize_documents(folder: str = "data"):
+def initialize_documents(folder: str = "data") -> None:
+    """Load supported documents into memory when the application starts."""
+
     global DOCUMENTS
     DOCUMENTS = load_documents_from_folder(folder)
+
     for doc in DOCUMENTS:
-        print("Loaded:", doc["source"])
-        print("Preview:", doc["content"][:200])
+        print(f"Loaded: {doc['source']}")
+        print(f"Preview: {doc['content'][:200]}")
         print("-----")
 
 
-def search_documents(question: str) -> dict:
-    q_words = set(question.lower().split())
+def retrieve_documents(question: str, limit: int = 2) -> list[dict]:
+    """
+    Find the most relevant documents using simple keyword matching.
 
-    best_matches = []
+    This is a lightweight retrieval method and can later be replaced
+    with embeddings and vector similarity search.
+    """
+
+    normalized_words = {
+        word.strip(".,!?;:()[]{}\"'").lower()
+        for word in question.split()
+        if len(word.strip(".,!?;:()[]{}\"'")) > 2
+    }
+
+    matches: list[dict] = []
 
     for doc in DOCUMENTS:
-        content = doc["content"]
+        content = doc.get("content", "")
         content_lower = content.lower()
 
-        score = sum(1 for word in q_words if word in content_lower)
+        score = sum(
+            1 for word in normalized_words
+            if word in content_lower
+        )
 
         if score > 0:
-            best_matches.append({
-                "source": doc["source"],
-                "content": content,
-                "score": score
-            })
+            matches.append(
+                {
+                    "source": doc.get("source", "Unknown source"),
+                    "content": content,
+                    "score": score,
+                }
+            )
 
-    best_matches.sort(key=lambda x: x["score"], reverse=True)
+    matches.sort(key=lambda item: item["score"], reverse=True)
 
-    top_matches = best_matches[:2]
+    return matches[:limit]
+
+
+def search_documents(question: str) -> dict:
+
+    """
+    Retrieve document context and build a reusable prompt template.
+
+    V2 prepares the retrieved information for a future LLM integration.
+    """
+
+    top_matches = retrieve_documents(question)
 
     if not top_matches:
         return {
-            "answer": "I could not find relevant information in the provided documents.",
-            "sources": []
+            "answer": (
+                "I could not find relevant information "
+                "in the provided documents."
+            ),
+            "sources": [],
+            "prompt": None,
         }
 
-    combined_text = "\n\n".join(match["content"][:500] for match in top_matches)
+    context = "\n\n".join(
+        (
+            f"Source: {match['source']}\n"
+            f"Content:\n{match['content'][:1000]}"
+        )
+        for match in top_matches
+    )
+
     sources = [match["source"] for match in top_matches]
 
+    prompt = build_document_prompt(
+        question=question,
+        context=context,
+        sources=sources,
+    )
+
     return {
-        "answer": f"Based on the documents, here is the relevant information:\n\n{combined_text}",
-        "sources": sources
+        "answer": prompt,
+        "sources": sources,
+        "prompt": prompt,
     }
+
+
+if __name__ == "__main__":
+    initialize_documents("data")
+
+    result = search_documents("What is the vacation policy?")
+
+    print("\nSources:")
+    print(result["sources"])
+
+    print("\nGenerated prompt:")
+    print(result["prompt"])
+
+    print("\nAnswer:")
+    print(result["answer"])

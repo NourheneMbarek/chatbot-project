@@ -1,44 +1,64 @@
-# 🤖 Simple Chatbot (Full-Stack)
+![Python](https://img.shields.io/badge/Python-3.12-blue)
 
-A simple full-stack chatbot application that:
+![FastAPI](https://img.shields.io/badge/FastAPI-green)
 
-* Answers questions from **static multi-format documents** (PDF, TXT, Markdown)
-* Retrieves **dynamic data** (e.g. vacation days) from a mocked external service
+![React](https://img.shields.io/badge/React-blue)
+
+![TypeScript](https://img.shields.io/badge/TypeScript-blue)
+
+![AI](https://img.shields.io/badge/AI-RAG-orange)
+
+![License](https://img.shields.io/badge/license-MIT-green)
+
+
+# 🤖 AI Document Assistant
+
+### Full-Stack RAG Chatbot built with React & FastAPI
+
+
+An AI-powered full-stack document assistant that combines document retrieval with external tool integration.
+
+The application can:
+
+- 📄 Answer questions from PDF, Markdown and TXT documents
+- 🔧 Retrieve dynamic information through external tools
+- 🧠 Route requests using intent detection
+- ⚡ Provide a clean React chat interface backed by FastAPI
 
 ---
 
 ## 🚀 Tech Stack
 
-### Backend
+### 🧠 AI
 
-* Python + FastAPI
-* Custom RAG (Retrieval-Augmented Generation)
-* Document loaders (PDF, TXT, Markdown)
+- Custom Retrieval Pipeline
+- RAG-inspired Architecture
+- Rule-based Intent Detection
+- Tool Calling
+- Multi-format Document Processing
 
-### Frontend
+### ⚙️ Backend
 
-* React + TypeScript
-* Tailwind CSS (chat UI)
+- Python
+- FastAPI
+- Pydantic
+- Uvicorn
+
+### 🎨 Frontend
+
+- React
+- TypeScript
+- Tailwind CSS
+
+### 🛠 Development
+
+- Git
+- GitHub
+- VS Code
 
 ---
 
-## 📂 Project Structure
 
-```
-chatbot-project/
-│
-├── backend/
-│   ├── main.py
-│   ├── rag.py
-│   ├── models.py
-│   ├── router.py
-│   ├── tools.py
-│   ├── loaders/
-│   └── data/
-│
-├── frontend/
-│
-└── README.md
 
 ## 📂 Project Structure
 
@@ -96,6 +116,28 @@ User → React Frontend → FastAPI Backend
 ```
 
 ---
+## ✨ Features
+
+- Document Question Answering
+- Multi-format Document Support
+- Intent Detection
+- External Tool Integration
+- Source References
+- REST API
+- Responsive React UI
+
+## 💡 Skills Demonstrated
+
+- FastAPI Development
+- REST APIs
+- React
+- TypeScript
+- Python
+- Document Processing
+- Retrieval-Augmented Generation (Concept)
+- Prompt Engineering Concepts
+- Software Architecture
+- Clean Code
 
 ---
 
@@ -240,14 +282,32 @@ Response:
   * `router.py` → intent detection
 
 ---
+## 📝 Prompt Engineering
 
-## 🔧 Improvements (Future Work)
+The application uses reusable prompt templates to prepare retrieved document context before sending it to a Large Language Model.
 
-* Add embeddings (OpenAI / local models)
-* Replace rule-based intent with NLP model
-* Add authentication (user-specific data)
-* Improve UI (chat history, streaming responses)
-* Dockerize full application
+Current workflow:
+
+1. Retrieve relevant documents
+2. Inject context into a reusable prompt template
+3. Include source references
+4. Prepare the prompt for LLM processing
+
+This architecture separates retrieval logic from prompt generation, making the system easier to maintain and extend.
+
+---
+
+## 🚀 Roadmap
+
+- Prompt Templates
+- OpenAI Integration
+- LangChain
+- Sentence Embeddings
+- ChromaDB
+- Conversation Memory
+- Streaming Responses
+- Docker
+- CI/CD
 
 ---
 
@@ -257,13 +317,34 @@ Nourhene Mbarek
 
 ---
 
-## ✅ Notes
+## 🎯 Project Goal
 
-This project was built as part of a technical assignment to demonstrate:
+The goal of this project is to explore modern AI application architecture by combining:
 
-* Full-stack development
-* Document processing
-* External service integration
-* Clean architecture and separation of concerns
+- Full-Stack Development
+- Retrieval-Augmented Generation
+- Prompt Engineering
+- External Tool Integration
+- Scalable Software Design
 
+The project will continue to evolve with new Generative AI technologies and production-ready features.
+
+---
+
+## 📚 Learning Journey
+
+This project evolves alongside my Generative AI learning path.
+
+Current milestones:
+
+- ✅ Prompt Engineering
+- ✅ ChatGPT for Developers
+- ✅ AI and Developer Productivity
+
+Upcoming upgrades:
+
+- LangChain
+- Prompt Flow
+- ChromaDB
+- LLM Integration
 ---
