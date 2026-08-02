@@ -1,6 +1,6 @@
 from app.loaders.document_loader import load_documents_from_folder
 from app.prompts import build_document_prompt
-
+from app.llm_service import generate_answer
 
 DOCUMENTS: list[dict] = []
 
@@ -17,7 +17,7 @@ def initialize_documents(folder: str = "data") -> None:
         print("-----")
 
 
-def retrieve_documents(question: str, limit: int = 2) -> list[dict]:
+def retrieve_documents(question: str, limit: int = 3) -> list[dict]:
     """
     Find the most relevant documents using simple keyword matching.
 
@@ -57,13 +57,6 @@ def retrieve_documents(question: str, limit: int = 2) -> list[dict]:
 
 
 def search_documents(question: str) -> dict:
-
-    """
-    Retrieve document context and build a reusable prompt template.
-
-    V2 prepares the retrieved information for a future LLM integration.
-    """
-
     top_matches = retrieve_documents(question)
 
     if not top_matches:
@@ -73,7 +66,6 @@ def search_documents(question: str) -> dict:
                 "in the provided documents."
             ),
             "sources": [],
-            "prompt": None,
         }
 
     context = "\n\n".join(
@@ -87,28 +79,27 @@ def search_documents(question: str) -> dict:
     sources = [match["source"] for match in top_matches]
 
     prompt = build_document_prompt(
-        question=question,
-        context=context,
-        sources=sources,
+    question=question,
+    context=context,
+    sources=sources,
     )
 
-    return {
-        "answer": prompt,
-        "sources": sources,
-        "prompt": prompt,
-    }
+    answer = generate_answer(prompt)
 
+    return {
+        "answer": answer,
+        "sources": sources,
+    }
 
 if __name__ == "__main__":
     initialize_documents("data")
 
-    result = search_documents("What is the vacation policy?")
+    result = search_documents(
+        "What is the vacation policy?"
+    )
 
     print("\nSources:")
     print(result["sources"])
 
-    print("\nGenerated prompt:")
-    print(result["prompt"])
-
-    print("\nAnswer:")
+    print("\nGenerated answer:")
     print(result["answer"])

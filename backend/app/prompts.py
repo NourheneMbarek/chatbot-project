@@ -7,6 +7,8 @@ Follow these rules:
 - If the answer is not present, say that you could not find it.
 - Keep the answer clear and concise.
 - Mention the source documents when useful.
+- Do not include technical file paths in the answer.
+- The application displays sources separately.
 """.strip()
 
 

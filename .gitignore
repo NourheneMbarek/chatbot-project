@@ -11,7 +11,9 @@ frontend/chatbot/dist/
 # Env
 .env
 **/.env
-
+.env
+venv/
+__pycache__/
 # OS / editor
 .DS_Store
 Thumbs.db

@@ -1,22 +1,28 @@
-from openai import OpenAI
-from app.prompts import SYSTEM_PROMPT, DOCUMENT_PROMPT
 import os
+
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
 
 client = OpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
 )
 
-def generate_answer(question, context):
+MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 
-    prompt = DOCUMENT_PROMPT.format(
-        context=context,
-        question=question
-    )
 
-    response = client.responses.create(
-        model="gpt-4.1-mini",
-        instructions=SYSTEM_PROMPT,
-        input=prompt,
-    )
+def generate_answer(prompt: str) -> str:
+    """Send a complete prompt to the LLM."""
 
-    return response.output_text
+    try:
+        response = client.responses.create(
+            model=MODEL,
+            input=prompt,
+        )
+
+        return response.output_text.strip()
+
+    except Exception as e:
+        print(f"OpenAI Error: {e}")
+        return "Sorry, I couldn't generate an answer."
