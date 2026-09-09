@@ -1,5 +1,6 @@
 from app.loaders.document_loader import load_documents_from_folder
-from app.prompts import build_document_prompt
+# from app.prompts import build_document_prompt
+
 from app.llm_service import generate_answer
 
 DOCUMENTS: list[dict] = []
@@ -78,13 +79,19 @@ def search_documents(question: str) -> dict:
 
     sources = [match["source"] for match in top_matches]
 
-    prompt = build_document_prompt(
-    question=question,
-    context=context,
-    sources=sources,
+    # prompt = build_document_prompt(
+    # question=question,
+    # context=context,
+    # sources=sources,
+    # )
+
+    # answer = generate_answer(prompt)
+
+    answer = generate_answer(
+        question=question,
+        context=context,
     )
 
-    answer = generate_answer(prompt)
 
     return {
         "answer": answer,

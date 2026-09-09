@@ -13,29 +13,38 @@
 
 # 🤖 AI Document Assistant
 
-### Full-Stack RAG Chatbot built with React & FastAPI
+### Full-Stack RAG Application with LangChain, OpenAI, React & FastAPI
 
-
-An AI-powered full-stack document assistant that combines document retrieval with external tool integration.
+An AI-powered full-stack document assistant that combines Retrieval-Augmented
+Generation (RAG), LangChain, OpenAI and external tool integration.
 
 The application can:
 
 - 📄 Answer questions from PDF, Markdown and TXT documents
+- 🧠 Generate grounded answers using retrieved document context
+- 🔗 Orchestrate the LLM pipeline with LangChain
+- 💬 Use structured prompt templates for consistent responses
 - 🔧 Retrieve dynamic information through external tools
-- 🧠 Route requests using intent detection
-- ⚡ Provide a clean React chat interface backed by FastAPI
+- 🧭 Route requests using intent detection
+- ⚡ Provide a responsive React + TypeScript chat interface backed by FastAPI
 
 ---
 
 ## 🚀 Tech Stack
 
-### 🧠 AI
+### 🧠  AI / LLM
 
-- Custom Retrieval Pipeline
-- RAG-inspired Architecture
+- LangChain
+- OpenAI / GPT-4.1-mini
+- Retrieval-Augmented Generation (RAG)
+- LangChain ChatPromptTemplate
+- LCEL (LangChain Expression Language)
+- StrOutputParser
+- Prompt Engineering
+- Context Injection
+- Custom Document Retrieval
 - Rule-based Intent Detection
-- Tool Calling
-- Multi-format Document Processing
+- External Tool Integration
 
 ### ⚙️ Backend
 
@@ -77,12 +86,19 @@ chatbot-project/
 │   │    │   ├── txt_loader.py
 │   │    │   ├── md_loader.py
 │   │    │   └── document_loader.py
+│   │    ├── llm_service.py     # LangChain + OpenAI integration
+│   │    ├── models.py          # Request/response schemas
+│   │    ├── prompts.py         # LangChain prompt templates
+│   │    ├── rag.py             # Document retrieval + context
+│   │    ├── router.py          # Intent detection
+│   │    └── tools.py           # External tools / mocked services
 │   ├── data/                  # Static documents
 │   │   ├── employee_guide.md
 │   │   ├── handbook.pdf
 │   │   └── vacation_policy.txt
 │   ├── requirements.txt       # Python dependencies
-│   └── README.md              # Backend documentation
+│   ├── README.md              # Backend documentation
+│   └── .env
 │
 ├── frontend/
 │   └── chatbot/
@@ -112,7 +128,27 @@ User → React Frontend → FastAPI Backend
            ┌────────────────┴──────────────┐
            │                               │
    📄 Document Search (RAG)       🔧 External Tool
-   (PDF, TXT, Markdown)          (Vacation API)
+   (PDF, TXT, Markdown)             (Vacation API)
+                                     Tool Request
+             │                             
+             ▼                             
+      Custom Retrieval                
+             │                        
+             ▼
+      Relevant Context
+             │
+             ▼
+    LangChain ChatPromptTemplate
+             │
+             ▼
+          ChatOpenAI
+       (GPT-4.1-mini)
+             │
+             ▼
+       StrOutputParser
+             │
+             ▼
+       Grounded Answer
 ```
 
 ---
@@ -128,16 +164,23 @@ User → React Frontend → FastAPI Backend
 
 ## 💡 Skills Demonstrated
 
-- FastAPI Development
-- REST APIs
+- Generative AI Application Development
+- Retrieval-Augmented Generation (RAG)
+- LangChain
+- OpenAI API Integration
+- Prompt Engineering
+- Context Injection
+- LCEL
+- LLM Response Parsing
+- FastAPI
+- REST API Development
 - React
 - TypeScript
 - Python
 - Document Processing
-- Retrieval-Augmented Generation (Concept)
-- Prompt Engineering Concepts
-- Software Architecture
-- Clean Code
+- Intent Detection
+- Tool Integration
+- Full-Stack Architecture
 
 ---
 
@@ -282,30 +325,53 @@ Response:
   * `router.py` → intent detection
 
 ---
-## 📝 Prompt Engineering
+## 📝 Prompt Engineering with LangChain
 
-The application uses reusable prompt templates to prepare retrieved document context before sending it to a Large Language Model.
+V4 uses LangChain's `ChatPromptTemplate` to separate system instructions
+from user input and retrieved document context.
 
-Current workflow:
+The system prompt instructs the model to:
 
-1. Retrieve relevant documents
-2. Inject context into a reusable prompt template
-3. Include source references
-4. Prepare the prompt for LLM processing
+- Answer only from retrieved context
+- Avoid inventing information
+- Return a fallback response when information is unavailable
+- Keep responses concise
+- Avoid exposing technical file paths
 
-This architecture separates retrieval logic from prompt generation, making the system easier to maintain and extend.
+### Pipeline
 
+Question + Retrieved Context
+            ↓
+    ChatPromptTemplate
+            ↓
+        ChatOpenAI
+            ↓
+     StrOutputParser
+            ↓
+      Final Answer
 ---
 
 ## 🚀 Roadmap
 
+### ✅ Completed
+
+- Custom Document Retrieval
+- Multi-format Document Loading
 - Prompt Templates
 - OpenAI Integration
-- LangChain
+- LangChain Integration
+- LCEL Pipeline
+- Intent Detection
+- External Tool Integration
+
+### 🔜 Next
+
 - Sentence Embeddings
-- ChromaDB
+- Vector Similarity Search
+- ChromaDB Vector Store
 - Conversation Memory
 - Streaming Responses
+- Advanced Tool Calling / AI Agents
 - Docker
 - CI/CD
 
@@ -331,20 +397,34 @@ The project will continue to evolve with new Generative AI technologies and prod
 
 ---
 
-## 📚 Learning Journey
+## 📚 Learning → Implementation
 
-This project evolves alongside my Generative AI learning path.
+This project evolves alongside my Generative AI learning journey.
 
-Current milestones:
+### ✅ Learning Completed
 
-- ✅ Prompt Engineering
-- ✅ ChatGPT for Developers
-- ✅ AI and Developer Productivity
+- AI and Developer Productivity
+- Introduction to Prompt Engineering for Generative AI
+- Prompt Engineering with ChatGPT
+- Prompt Engineering Skills for Developers
+- Prompt Engineering with LangChain
 
-Upcoming upgrades:
+### 🛠 Applied in this Project
 
+- Prompt Engineering
+- Reusable Prompt Templates
+- Context Injection
+- Retrieval-Augmented Generation
+- OpenAI Integration
 - LangChain
-- Prompt Flow
+- LCEL
+- Grounded LLM Responses
+
+### 🔜 Next Learning & Implementation
+
+- Embeddings
+- Vector Databases
 - ChromaDB
-- LLM Integration
+- Conversation Memory
+- AI Agents & Advanced Tool Calling
 ---

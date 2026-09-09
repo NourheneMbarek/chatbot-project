@@ -1,45 +1,77 @@
-SYSTEM_PROMPT = """
-You are an internal HR assistant.
-
-Follow these rules:
-- Answer only from the provided document context.
-- Do not invent information.
-- If the answer is not present, say that you could not find it.
-- Keep the answer clear and concise.
-- Mention the source documents when useful.
-- Do not include technical file paths in the answer.
-- The application displays sources separately.
-""".strip()
+from langchain_core.prompts import ChatPromptTemplate
 
 
-DOCUMENT_PROMPT_TEMPLATE = """
-{system_prompt}
+DOCUMENT_PROMPT = ChatPromptTemplate.from_messages([
+    (
+        "system",
+        """
+        You are an internal HR assistant.
 
-Document context:
-{context}
+        Follow these rules:
+        - Answer only from the provided document context.
+        - Do not invent information.
+        - If the answer is not present, say that you could not find it.
+        - Keep the answer clear and concise.
+        - Do not include technical file paths in the answer.
+        - The application displays sources separately.
+        """
+    ),
+    (
+        "human",
+        """
+        Document context:
+        {context}
 
-User question:
-{question}
+        User question:
+        {question}
 
-Sources:
-{sources}
+        Answer:
+        """
+    ),
+])
 
-Answer:
-""".strip()
+# SYSTEM_PROMPT = """
+# You are an internal HR assistant.
+
+# Follow these rules:
+# - Answer only from the provided document context.
+# - Do not invent information.
+# - If the answer is not present, say that you could not find it.
+# - Keep the answer clear and concise.
+# - Mention the source documents when useful.
+# - Do not include technical file paths in the answer.
+# - The application displays sources separately.
+# """.strip()
 
 
-def build_document_prompt(
-    question: str,
-    context: str,
-    sources: list[str],
-) -> str:
-    """Build a reusable prompt from retrieved document context."""
+# DOCUMENT_PROMPT_TEMPLATE = """
+# {system_prompt}
 
-    source_text = ", ".join(sources) if sources else "No sources found"
+# Document context:
+# {context}
 
-    return DOCUMENT_PROMPT_TEMPLATE.format(
-        system_prompt=SYSTEM_PROMPT,
-        context=context,
-        question=question,
-        sources=source_text,
-    )
+# User question:
+# {question}
+
+# Sources:
+# {sources}
+
+# Answer:
+# """.strip()
+
+
+# def build_document_prompt(
+#     question: str,
+#     context: str,
+#     sources: list[str],
+# ) -> str:
+#     """Build a reusable prompt from retrieved document context."""
+
+#     source_text = ", ".join(sources) if sources else "No sources found"
+
+#     return DOCUMENT_PROMPT_TEMPLATE.format(
+#         system_prompt=SYSTEM_PROMPT,
+#         context=context,
+#         question=question,
+#         sources=source_text,
+#     )

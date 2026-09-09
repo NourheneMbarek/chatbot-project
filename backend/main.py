@@ -8,42 +8,56 @@ from app.rag import initialize_documents, search_documents
 
 
 app = FastAPI(
-    title="Simple Chatbot API",
-    description="Chatbot using static documents and a mocked external service",
-    version="1.0.0"
+    title="AI Document Assistant API",
+    description=(
+        "Full-stack chatbot using document retrieval, "
+        "OpenAI-generated answers, and a mocked external service."
+    ),
+    version="3.0.0",
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 @app.on_event("startup")
-def startup_event():
+def startup_event() -> None:
     initialize_documents("data")
 
+
 @app.get("/")
-def root():
+def root() -> dict:
     return {"message": "Backend running"}
 
 
 @app.post("/chat", response_model=ChatResponse)
-def chat(query: Query):
+def chat(query: Query) -> ChatResponse:
     intent = detect_intent(query.question)
 
     if intent == "TOOL_VACATION":
         data = get_vacation_days("user_1")
+
         return ChatResponse(
-            answer=f"You have {data['remaining_days']} vacation days left.",
+            answer=(
+                f"You have {data['remaining_days']} "
+                "vacation days left."
+            ),
             type="tool",
-            sources=[]
+            sources=[],
         )
 
     doc_result = search_documents(query.question)
+
     return ChatResponse(
         answer=doc_result["answer"],
         type="document",
-        sources=doc_result["sources"]
+        sources=doc_result["sources"],
     )
